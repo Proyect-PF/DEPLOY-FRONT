@@ -4,7 +4,7 @@ const path = require("path");
 const Sequelize = require("sequelize");
 const process = require("process");
 const basename = path.basename(__dirname);
-import config from '../config/config';
+
 const db_deploy = "postgresql://postgres:ar1cxwVG4hcZhPtpSunm@containers-us-west-55.railway.app:6434/railway"
 
 
