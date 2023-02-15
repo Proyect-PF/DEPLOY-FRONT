@@ -2,7 +2,7 @@ import {Express, Request, Response, response} from "express";
 import {request} from "http";
 import {Op} from "sequelize";
 import db from "../database/database";
-import cloudinary from "../utils/cloudinary";
+//import cloudinary from "../utils/cloudinary";
 import getErrorMessage from "../helpers/handleErrorCatch";
 import { TypeProduct } from "../types";
 
