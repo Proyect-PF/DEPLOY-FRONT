@@ -1,13 +1,12 @@
+import dotenv from 'dotenv';
 import app from './src/app';
-import db from './src/database';
+import db from './src/database/database';
 import {
   POST_rolesInitials,
   POST_usersInitials,
 } from './src/helpers/initialSetup';
-import dotenv from 'dotenv';
 
 dotenv.config();
-//const { USER_NAME, USER_EMAIL, USER_PASSWORD, USER_ROLE } = process.env;
 const { USER_NAME, USER_EMAIL, USER_PASSWORD, USER_ROLE } = process.env;
 const port = process.env.PORT || 3700;
 

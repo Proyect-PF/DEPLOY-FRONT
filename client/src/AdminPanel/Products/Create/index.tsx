@@ -1,9 +1,12 @@
 import { Formik } from "formik";
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import Swal from "sweetalert2";
 import Button from "../../../components/Buttons/Button/Button";
 import Input from "../../../components/Inputs/Input";
 import { adminActions } from "../../AdminRedux";
 import FileUpload from "./FileUploader";
+import check from "../../../assets/svg/check.svg";
 
 type Props = {
   className: string;
@@ -11,9 +14,16 @@ type Props = {
 
 const Create = ({ className }: Props): JSX.Element => {
   const [img, setImg] = useState(true);
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "bg-white border-black rounded-none",
+      cancelButton: "btn btn-danger",
+    },
+  });
 
   return (
     <div className={className}>
+      <ToastContainer />
       <Formik
         initialValues={{
           name: "",
@@ -22,18 +32,46 @@ const Create = ({ className }: Props): JSX.Element => {
           S: 0,
           M: 0,
           L: 0,
-          XL: 0,
+          // XL: 0,
           price: 0,
           show_in_shop: "true",
           image: "",
+          promotion: "false",
+          promotional_price: 0,
         }}
         onSubmit={(values, { resetForm }) => {
-          img ? setImg(false) : setImg(true);
-          adminActions.ADMcreate_product({
-            ...values,
-            show_in_shop: values.show_in_shop === "true" ? true : false,
-          });
-          resetForm();
+          swalWithBootstrapButtons
+            .fire({
+              title:
+                '<p class="mt-4 text-4xl font-bold font-rift text-black">¿Estás seguro?</p>',
+              imageUrl: check,
+              html: '<p class="font-poppins font-medium text-black italic" >Quieres crear el producto?</p>',
+              showCancelButton: true,
+              showConfirmButton: true,
+              confirmButtonColor: "#000",
+              cancelButtonColor: "#e5e7eb",
+              confirmButtonText:
+                '<p class="font-rift text-lg text-white">Si, Crear!</p>',
+              cancelButtonText:
+                '<p class="font-rift text-lg text-black">No, cancelar!</p>',
+              focusConfirm: false,
+              reverseButtons: true,
+            })
+            .then((result) => {
+              if (result.isConfirmed) {
+                img ? setImg(false) : setImg(true);
+                adminActions.ADMcreate_product(
+                  {
+                    ...values,
+                    show_in_shop: values.show_in_shop === "true" ? true : false,
+                    promotion: values.promotion === "true" ? true : false,
+                    promotional_price: values.promotional_price,
+                  },
+                  toast
+                );
+                resetForm();
+              }
+            });
         }}
       >
         {({
@@ -92,7 +130,7 @@ const Create = ({ className }: Props): JSX.Element => {
               <p className="text-xl">Stock:</p>
               <div className="flex gap-8">
                 <div className="flex gap-8">
-                  <label className="w-2 text-xl">S:</label>
+                  <label className="w-2 text-xl">1:</label>
                   <Input
                     type="number"
                     id="S"
@@ -105,7 +143,7 @@ const Create = ({ className }: Props): JSX.Element => {
                   />
                 </div>
                 <div className="flex gap-8">
-                  <label className="w-2 text-xl">M:</label>
+                  <label className="w-2 text-xl">2:</label>
                   <Input
                     type="number"
                     id="M"
@@ -118,7 +156,7 @@ const Create = ({ className }: Props): JSX.Element => {
                   />
                 </div>
                 <div className="flex gap-8">
-                  <label className="w-2 text-xl">L:</label>
+                  <label className="w-2 text-xl">3:</label>
                   <Input
                     type="number"
                     id="L"
@@ -130,7 +168,7 @@ const Create = ({ className }: Props): JSX.Element => {
                     onBlur={handleBlur}
                   />
                 </div>
-                <div className="flex gap-8">
+                {/* <div className="flex gap-8">
                   <label className="w-2 text-xl">XL:</label>
                   <Input
                     type="number"
@@ -142,7 +180,7 @@ const Create = ({ className }: Props): JSX.Element => {
                     className="font-mono w-14"
                     onBlur={handleBlur}
                   />
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="flex gap-16">
@@ -154,7 +192,40 @@ const Create = ({ className }: Props): JSX.Element => {
                 placeholder=""
                 value={values.price}
                 onChange={handleChange}
-                className="font-mono w-14"
+                className="w-24 font-mono"
+                onBlur={handleBlur}
+              />
+            </div>
+            <div className="flex gap-8">
+              <p className="text-xl">Producto en promocion?:</p>
+              <select
+                id="promotion"
+                name="promotion"
+                value={values.promotion}
+                onChange={handleChange}
+                className="text-xl border-b border-black"
+              >
+                <option value="" disabled></option>
+                <option value="true">Si</option>
+                <option value="false">No</option>
+              </select>
+              <label
+                className={`text-xl w-fit ${
+                  values.promotion === "true" ? "visible" : "hidden"
+                }`}
+              >
+                Precio promocional:
+              </label>
+              <Input
+                type="number"
+                id="promotional_price"
+                name="promotional_price"
+                placeholder=""
+                value={values.promotional_price}
+                onChange={handleChange}
+                className={`w-24 font-mono ${
+                  values.promotion === "true" ? "visible" : "hidden"
+                }`}
                 onBlur={handleBlur}
               />
             </div>

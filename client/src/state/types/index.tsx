@@ -10,6 +10,8 @@ export type Product = {
   color: string;
   show_in_shop: boolean;
   image: string;
+  promotion?: boolean;
+  promotional_price?: number;
 };
 
 export type AddProductPayload = {
@@ -32,40 +34,46 @@ export type ProductState = {
   render: boolean;
 };
 
-
 //------------------------------------------------
 //Tipos de usuarios
 export type User = {
   fullname: string;
-  password:string;
+  password: string;
   email: string;
   id: number;
   id_role: number;
+  news_letter: boolean;
 };
 
 export type UserRegister = {
   fullname: string;
-  password:string;
+  password: string;
   email: string;
   role: string | undefined;
-}
+};
 export type UserLog = {
-  password:string;
+  password: string;
   email: string;
-}
-
-export type UserState = {
-  allUsers: User[];
-  adminLogin: boolean;
 };
 
+export type UserState = {
+  //allUsers: User[];
+  //adminLogin: boolean;
+  //userLogin: boolean;
+  userId: null;
+  userInfo: null;
+  userToken: null;
+  userType: null;
+  error: null;
+  success: boolean;
+};
 
 //------------------------------------------------
 export type Checkout = {
   id: string;
   name: string;
   size: string;
-  price: number;
+  price: number | undefined;
   ammount: number;
   imgF: string;
 };

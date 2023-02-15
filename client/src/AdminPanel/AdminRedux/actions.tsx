@@ -3,15 +3,13 @@ import { Dispatch } from "redux";
 import { Product } from "../../state/types";
 import { AdminAction, AdminActionType } from "./types-interfaces";
 import Swal from "sweetalert2";
-
-axios.defaults.headers.common[
-  "x-access-token"
-] = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjc2MDI4NDI5LCJleHAiOjE2NzYxMTQ4Mjl9.92JhKvWFk6gi0M41zsyxGkxpuHs_xicYpHKvXEbRraM`;
+import { PORT, baseURL } from "../../utils/url&port";
 
 //Product actions
-export const ADMfetch_products = () => {
+export const ADMfetch_products = (query: string | null = null) => {
   return (dispatch: Dispatch<AdminAction>) => {
-    axios.get("/products/").then((res) => {
+    console.log(query);
+    axios.get(`${baseURL}/products/?${query}`).then((res) => {
       const payload: Product[] = res.data;
       dispatch({
         type: AdminActionType.GET_ALL_PRODUCTS,
@@ -21,21 +19,9 @@ export const ADMfetch_products = () => {
   };
 };
 
-export const ADMfetch_products_name = (name: string) => {
+export const ADMfetch_products_id = (id: number) => {
   return (dispatch: Dispatch<AdminAction>) => {
-    axios.get(`/products/search/${name}`).then((res) => {
-      const payload = res.data;
-      dispatch({
-        type: AdminActionType.GET_PRODUCT_BY_NAME,
-        payload,
-      });
-    });
-  };
-};
-
-export const ADMfetch_products_id = (id: number | undefined) => {
-  return (dispatch: Dispatch<AdminAction>) => {
-    axios.get(`/products/${id}`).then((res) => {
+    axios.get(`${baseURL}/products/${id}`).then((res) => {
       const payload = res.data;
       dispatch({
         type: AdminActionType.GET_PRODUCT_BY_ID,
@@ -45,64 +31,37 @@ export const ADMfetch_products_id = (id: number | undefined) => {
   };
 };
 
-export const ADMcreate_product = (payload: any) => {
-  axios
-    .post("/products/", payload)
-    .then((res) => {
-      Swal.fire({
-        title: "Se creo el producto con exito",
-        confirmButtonText: "OK",
-      });
-    })
-    .catch((err) => {
-      Swal.fire({
-        title: err.response.data.message,
-        cancelButtonText: "OK",
-      });
-    });
+export const ADMcreate_product = (payload: any, toast: any) => {
+  toast.promise(axios.post(`${baseURL}/products/`, payload), {
+    pending: "Creando...",
+    success: "Se creo el producto con exito.",
+    error: "Algo salio mal...",
+  });
 };
 
-export const ADMupdate_product = (payload: any) => {
-  axios
-    .put(`/products`, payload)
-    .then(() =>
-      Swal.fire({
-        title: "Se edito el producto con exito",
-        confirmButtonText: "OK",
-      })
-    )
-    .catch((err) =>
-      Swal.fire({
-        title: err.response.data.message,
-        cancelButtonText: "OK",
-      })
-    );
+export const ADMupdate_product = (payload: any, toast: any) => {
+  toast.promise(axios.put(`${baseURL}/products`, payload), {
+    pending: "Editando...",
+    success: "Se edito el producto con exito.",
+    error: "Algo salio mal...",
+  });
 };
 
-export const ADMdelete_product = (payload: number | undefined) => {
-  axios
-    .delete(`/products/${payload}`)
-    .then(() =>
-      Swal.fire({
-        title: "Se elimino el producto con exito",
-        confirmButtonText: "OK",
-      })
-    )
-    .catch((err) =>
-      Swal.fire({
-        title: err.response.data.message,
-        cancelButtonText: "OK",
-      })
-    );
+export const ADMdelete_product = (payload: number, toast: any) => {
+  toast.promise(axios.delete(`${baseURL}/products/${payload}`), {
+    pending: "Eliminando...",
+    success: "Se elimino el producto con exito.",
+    error: "Algo salio mal...",
+  });
 };
 
 //Orders Actions
 export const ADMfetch_orders = () => {
   return (dispatch: Dispatch<AdminAction>) => {
     axios
-      .get(`/orders`)
+      .get(`${baseURL}/orders`)
       .then((res) => {
-        const payload = res.data;
+        const payload = res.data.orders;
 
         dispatch({
           type: AdminActionType.GET_ALL_ORDERS,
@@ -116,7 +75,7 @@ export const ADMfetch_orders = () => {
 export const ADMfetch_order_id = (id: number | undefined) => {
   return (dispatch: Dispatch<AdminAction>) => {
     axios
-      .get(`/orders/${id}`)
+      .get(`${baseURL}/orders/${id}`)
       .then((res) => {
         const payload = res.data;
         dispatch({
@@ -128,17 +87,26 @@ export const ADMfetch_order_id = (id: number | undefined) => {
   };
 };
 
-export const ADMupdate_order = (id: number | undefined, status: string) => {
-  axios
-    .put(`/orders/?id=${id}&status=${status}`)
-    .then(() => alert("OK"));
+export const ADMupdate_order = (
+  id: number | undefined,
+  status: string,
+  toast: any
+) => {
+  toast.promise(
+    axios.put(`${baseURL}/orders/?id=${id}&status=${status}`),
+    {
+      pending: "Actualizando...",
+      success: "Se actualizo el producto con exito",
+      error: "Algo salio mal...",
+    }
+  );
 };
 
 //Users Actions
 export const ADMfetch_users = () => {
   return (dispatch: Dispatch<AdminAction>) => {
     axios
-      .get(`/users`)
+      .get(`${baseURL}/users`)
       .then((res) => {
         const payload = res.data;
         dispatch({
@@ -153,7 +121,7 @@ export const ADMfetch_users = () => {
 export const ADMfetch_users_id = (id: number | undefined) => {
   return (dispatch: Dispatch<AdminAction>) => {
     axios
-      .get(`/users/${id}`)
+      .get(`${baseURL}/users/${id}`)
       .then((res) => {
         const payload = res.data;
         dispatch({

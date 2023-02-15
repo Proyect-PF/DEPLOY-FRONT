@@ -1,5 +1,5 @@
 import { ActionType } from "../action-types";
-import { AddProductPayload, Product, Checkout, User, Orders } from "../types";
+import { AddProductPayload, Checkout, Orders, Product, User } from "../types";
 
 //AL: IMPORTANT!!!!
 // all actions needs an interface, also be added to the Action type.
@@ -38,6 +38,10 @@ interface FilterProducts {
   payload: Product[];
 }
 
+interface ClearProductDetails {
+  type: ActionType.CLEAR_PRODUCT_DETAILS;
+}
+
 //AL: once you created the needed interface add it here with |
 export type ActionProducts =
   | GetAllAction
@@ -46,31 +50,28 @@ export type ActionProducts =
   | GetProductDetails
   | SearchProducts
   | SortProducts
-  | FilterProducts;
+  | FilterProducts
+  | ClearProductDetails;
 
-//AL: Interfaces & types for USER STATE
-
-interface AdminLogin {
-  type: ActionType.ADMIN_LOGIN;
+interface UserLogin {
+  type: ActionType.USER_LOGIN;
+  payload: { token: string; role: string; fullname: string; id: string };
 }
-
-interface IUserRegister {
-  type: ActionType.GET_TOKEN_USER_LOG;
+interface UserRegister {
+  type: ActionType.USER_REGISTER;
   //Token
   payload: object | string;
 }
-interface IUserLog {
-  type: ActionType.GET_TOKEN_USER_LOG;
+interface UserLogout {
+  type: ActionType.USER_LOGOUT;
   //Token
-  payload: string | object;
 }
-
 interface GetAllUsers {
   type: ActionType.GET_ALL_USERS;
   payload: User[];
 }
 
-export type ActionUser = AdminLogin | GetAllUsers | IUserLog | IUserRegister;
+export type ActionUser = UserLogin | GetAllUsers | UserLogout | UserRegister;
 
 //LG: Interfaces & types for CHECKOUT STATE
 
@@ -83,8 +84,11 @@ interface RemoveCheckout {
   type: ActionType.REMOVE_CHECKOUT;
   payload: string;
 }
+interface ClearCheckoutList {
+  type: ActionType.CLEAR_CHECKOUT_LIST;
+}
 
-export type ActionCheckout = AddCheckout | RemoveCheckout;
+export type ActionCheckout = AddCheckout | RemoveCheckout | ClearCheckoutList;
 
 //Interfaces & types for ORDERS STATE
 

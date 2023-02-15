@@ -1,18 +1,23 @@
 import Products from "./Products";
 import { useState, useEffect } from "react";
 import InformationPanel from "./Information";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import Orders from "./Orders";
 import { adminActions } from "./AdminRedux";
-// import EmailCreation from "./Email";
+import { State } from "../state/reducers";
+import { useNavigate } from "react-router-dom";
+import EmailList from "./Email";
 
 const AdminP = (): JSX.Element => {
   const [panel, setPanel] = useState("info");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { ADMfetch_products } = bindActionCreators(adminActions, dispatch);
+  const { userType } = useSelector((state: State) => state.user);
 
   useEffect(() => {
+    if (userType !== "admin") navigate("/");
     ADMfetch_products();
   }, []);
 
@@ -23,14 +28,14 @@ const AdminP = (): JSX.Element => {
         <button onClick={() => setPanel("products")}>Productos</button>
         <button onClick={() => setPanel("orders")}>Ordenes</button>
         {/* <button onClick={() => setPanel("sales")}>Promociones</button>*/}
-        {/* <button onClick={() => setPanel("email")}>Redactar Email</button> */}
+        <button onClick={() => setPanel("newsletter")}>Newsletter</button>
       </div>
       <div className="w-full ">
         {panel === "products" && <Products />}
         {panel === "orders" && <Orders />}
-        {panel === "info" && <InformationPanel />}
+        {panel == "info" && <InformationPanel />}
         {/* {panel == "sales" && <div>Sales</div>}*/}
-        {/* {panel == "email" && <EmailCreation />} */}
+        {panel == "newsletter" && <EmailList />}
       </div>
     </div>
   );

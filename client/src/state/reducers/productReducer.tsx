@@ -73,7 +73,23 @@ const productReducer = (
         ...state,
         productList: action.payload,
       };
-
+    case ActionType.CLEAR_PRODUCT_DETAILS:
+      return {
+        ...state,
+        productDetails: {
+          id: 0,
+          name: "",
+          description: "",
+          S: 0,
+          M: 0,
+          L: 0,
+          XL: 0,
+          price: 0,
+          color: "",
+          show_in_shop: true,
+          image: "",
+        },
+      };
     default:
       return {
         ...state,
