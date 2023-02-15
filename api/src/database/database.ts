@@ -4,8 +4,8 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const process = require('process');
 const basename = path.basename(__dirname);
-import config from "../config/config";
-
+//import config from "..config/config";
+const config = require("..config/config");
 
 
 const db:any = {};
