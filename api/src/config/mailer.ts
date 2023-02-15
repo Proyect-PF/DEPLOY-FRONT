@@ -1,6 +1,6 @@
-import nodemailer = require("nodemailer");
-import dotenv = require("dotenv");
-import fs = require("fs");
+const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
+const fs = require("fs");
 dotenv.config();
 export const transporter = nodemailer.createTransport({
   service: "gmail",
