@@ -4,7 +4,7 @@ import {Op} from "sequelize";
 import db from "../database/database";
 import OrderProduct from "../database/models/order-product.model";
 import Product from "../database/models/product.model";
-import cloudinary from "../utils/cloudinary";
+//import cloudinary from "../utils/cloudinary";
 import axios from "axios";
 
 interface RequestParams {}
