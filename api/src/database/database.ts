@@ -4,14 +4,15 @@ const path = require("path");
 const Sequelize = require("sequelize");
 const process = require("process");
 const basename = path.basename(__dirname);
-import config from './config';
+import config from '../config/config';
+
 
 
 const db: any = {};
 
 let sequelize: any;
 
-sequelize = new Sequelize(config.db_deploy);
+sequelize = new Sequelize((config as any).db_deploy);
 //sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 sequelize
