@@ -8,6 +8,8 @@ import { useEffect } from 'react';
 import { clearCheckoutList } from '../../state/action-creators';
 import Swal from 'sweetalert2';
 import logged from "../../assets/svg/logged.svg";
+import { baseURL } from '../../utils/url&port';
+
 
 interface ProductSize {
   [size: string]: number;
@@ -53,7 +55,7 @@ const Checkout = (): JSX.Element => {
     e.preventDefault()
     if(success){
       axios
-      .post('http://localhost:3700/orders', userProducts)
+      .post('${baseURL}/orders', userProducts)
       .then((response) => {
         console.log('DESPUES DEL POST', response);
         return response;
