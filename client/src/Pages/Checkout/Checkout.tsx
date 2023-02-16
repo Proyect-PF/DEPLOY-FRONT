@@ -55,7 +55,7 @@ const Checkout = (): JSX.Element => {
     e.preventDefault()
     if(success){
       axios
-      .post('${baseURL}/orders', userProducts)
+      .post(`${baseURL}/orders`, userProducts)
       .then((response) => {
         console.log('DESPUES DEL POST', response);
         return response;
