@@ -10,6 +10,7 @@ import { actionCreators } from "../../state";
 import { bindActionCreators } from "redux";
 import { PORT, baseURL } from "../../utils/url&port";
 
+
 export const FormCheckout = (): JSX.Element => {
   const { userId } = useSelector((state: State) => state.user);
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ export const FormCheckout = (): JSX.Element => {
       onSubmit={(values) => {
         axios({
           method: "post",
-          url: `${baseURL}:${PORT}/orders/payment`,
+          url: `${baseURL}/orders/payment`,
           data: values,
         }).then((res) => {
           window.location.href = res.data.res.body.init_point;
