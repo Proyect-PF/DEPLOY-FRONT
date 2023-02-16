@@ -8,6 +8,7 @@ import { actionCreators } from '../../state';
 import { State } from '../../state/reducers';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { baseURL } from '../../utils/url&port';
 
 const orders = [
   {
@@ -48,7 +49,7 @@ const OrderDetails = (): JSX.Element => {
   useEffect(() => {
     const sendDataOrder = async () => {
       axios
-        .post('http://localhost:3700/orders/feedback', {
+        .post(`${baseURL}/orders/feedback`, {
           payment_id,
           external_reference,
         })
